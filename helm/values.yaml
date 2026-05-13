@@ -1,0 +1,8 @@
+namespace: opsforge-system
+frontend:
+  image: ghcr.io/biraj49/testapp2-frontend:latest
+backend:
+  image: ghcr.io/biraj49/testapp2-backend:latest
+replicaCount: 2
+ingress:
+  host: testapp2.local

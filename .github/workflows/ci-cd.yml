@@ -1,0 +1,28 @@
+name: OpsForge CI/CD
+on:
+  push:
+    branches: [main]
+jobs:
+  validate-generated-devops:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate generated files
+        run: |
+          test -f docker-compose.yml
+          test -f .env.example
+          test -d k8s
+          test -d helm
+          test -d terraform
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image publishing placeholder
+        run: echo "Starter project validated. Add application source before building ghcr.io/BIRAJ49/testapp2:latest."
+      - name: Update GitOps repo
+        run: echo "update opsforge-gitops image tag"

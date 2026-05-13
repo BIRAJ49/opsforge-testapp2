@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: testapp2-postgres
+  namespace: opsforge-system
+spec:
+  serviceName: testapp2-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testapp2-postgres
+  template:
+    metadata:
+      labels:
+        app: testapp2-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          envFrom:
+            - secretRef:
+                name: testapp2-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testapp2-redis
+  namespace: opsforge-system
+spec:
+  selector:
+    matchLabels:
+      app: testapp2-redis
+  template:
+    metadata:
+      labels:
+        app: testapp2-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
